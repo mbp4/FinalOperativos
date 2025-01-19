@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Buscar Producto</title>
+</head>
+<body>
+<h2>Buscar Producto por ID</h2>
+
+<form action="/producto/buscar" method="post">
+  <label for="productoId">ID del Producto:</label>
+  <input type="text" id="productoId" name="productoId" th:value="${productoId}" required/>
+  <button type="submit">Buscar</button>
+</form>
+
+<p th:if="${error}" th:text="${error}" style="color: red;"></p>
+
+<div th:if="${producto != null}">
+  <h3>Detalles del Producto</h3>
+  <p><strong>ID:</strong> <span th:text="${producto.id}"></span></p>
+  <p><strong>Nombre:</strong> <span th:text="${producto.nombre}"></span></p>
+  <p><strong>Descripción:</strong> <span th:text="${producto.descripcion}"></span></p>
+  <p><strong>Precio:</strong> <span th:text="${producto.precio}"></span></p>
+</div>
+
+<br/>
+<a href="/">Volver al inicio</a>
+</body>
+</html>

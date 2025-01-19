@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Aplicacion de Productos</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 50px;
+    }
+    .button {
+      padding: 15px 30px;
+      margin: 10px;
+      font-size: 16px;
+      text-decoration: none;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+<h1>Bienvenido, elija una opcion</h1>
+
+<div>
+  <a href="/producto/agregar" class="button">Agregar Producto</a>
+  <a href="/producto/actualizar" class="button">Actualizar Producto</a>
+  <a href="/producto/buscar" class="button">Buscar Producto</a>
+  <a href="/productos" class="button">Ver Todos los Productos</a>
+</div>
+
+<br/>
+</body>
+</html>
