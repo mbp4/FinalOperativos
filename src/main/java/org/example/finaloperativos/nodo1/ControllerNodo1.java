@@ -13,7 +13,7 @@ public class ControllerNodo1 {
     @Autowired
     private ServiceNodo1 serviceNodo1;
 
-    //este metodo muestra un formulario
+    //metodo para agregar info del producto en un formulario
     @GetMapping("/producto/agregar")
     public String mostrarFormulario(Model model) {
         model.addAttribute("producto", new Producto());

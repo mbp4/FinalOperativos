@@ -14,23 +14,34 @@ public class ControllerNodo2 {
     @Autowired
     private ServiceNodo2 serviceNodo2;
 
-    // Mostramos el formulario para poder usar nuestro progrmaa
-    @GetMapping("/producto/actualizar/{id}")
-    public String mostrarFormulario(@PathVariable("id") String id, Model model) {
-        Producto producto = serviceNodo2.obtenerProductoPorId(id);
+    @GetMapping("/producto/actualizar")
+    public String mostrarFormulario(Model model) {
+        model.addAttribute("producto", new Producto());
+        model.addAttribute("productoId", "");
+        return "actualizarProducto";
+    }
+
+    @GetMapping("/producto/actualizar/{productoId}")
+    public String mostrarFormularioActualizar(@PathVariable("productoId") String productoId, Model model) {
+        Producto producto = serviceNodo2.obtenerProductoPorId(productoId);
         if (producto != null) {
             model.addAttribute("producto", producto);
             return "actualizarProducto";
         } else {
             model.addAttribute("error", "Producto no encontrado");
-            return "error";
+            return "actualizarProducto";
         }
     }
 
-    //con este metodo procesaremos la busqeuda del usuario
-    @PostMapping("/producto/actualizar/{id}")
-    public String actualizarProducto(@PathVariable("id") String id, @ModelAttribute Producto producto) {
-        serviceNodo2.actualizarProducto(id, producto);
-        return "redirect:/producto/actualizar/" + id;
+    @PostMapping("/producto/actualizar")
+    public String actualizarCantidadProducto(@ModelAttribute Producto producto, Model model) {
+        boolean actualizado = serviceNodo2.actualizarCantidadProducto(producto.getId(), producto.getCantidad());
+        if (actualizado) {
+            model.addAttribute("mensaje", "Cantidad actualizada con éxito");
+        } else {
+            model.addAttribute("error", "Error al actualizar la cantidad del producto");
+        }
+        return "actualizarProducto";
     }
+
 }

@@ -2,6 +2,7 @@ package org.example.finaloperativos.nodo2;
 
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.DocumentReference;
+import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.WriteResult;
 import org.example.finaloperativos.Producto;
 import org.springframework.stereotype.Service;
@@ -19,26 +20,13 @@ public class ServiceNodo2 {
         this.db = db;
     }
 
-    public void actualizarProducto(String productoId, Producto producto) {
-        DocumentReference productoRef = db.collection("productos").document(productoId);
-
-        ApiFuture<WriteResult> result = productoRef.set(producto);
-
-        try {
-            result.get();
-            System.out.println("La cantidad del producto ha sido actualizada");
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-            System.err.println("Error al actualizar el producto: " + e.getMessage());
-        }
-    }
-
+    //con este metodo encontramos por id
     public Producto obtenerProductoPorId(String productoId) {
         DocumentReference productoRef = db.collection("productos").document(productoId);
-        ApiFuture<com.google.cloud.firestore.DocumentSnapshot> future = productoRef.get();
+        ApiFuture<DocumentSnapshot> future = productoRef.get();
 
         try {
-            com.google.cloud.firestore.DocumentSnapshot documentSnapshot = future.get();
+            DocumentSnapshot documentSnapshot = future.get();
             if (documentSnapshot.exists()) {
                 return documentSnapshot.toObject(Producto.class);
             }
@@ -46,6 +34,20 @@ public class ServiceNodo2 {
             e.printStackTrace();
             System.err.println("Error al obtener el producto: " + e.getMessage());
         }
-        return null;
+        return null;  // En caso de que no exista, se devuelve un null
+    }
+
+    //con esto actualizaremos el producto encontrado
+    public boolean actualizarCantidadProducto(String productoId, int nuevaCantidad) {
+        DocumentReference productoRef = db.collection("productos").document(productoId);
+        ApiFuture<WriteResult> future = productoRef.update("cantidad", nuevaCantidad);
+        try {
+            future.get();
+            return true;
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+            System.err.println("Error al actualizar la cantidad del producto: " + e.getMessage());
+            return false;
+        }
     }
 }
