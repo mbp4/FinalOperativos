@@ -1,28 +1,107 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Buscar Producto</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f4f7fa;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+    h2, h3 {
+      text-align: center;
+      color: #333;
+    }
+    .container {
+      width: 80%;
+      margin: 30px auto;
+      background-color: #ffffff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    label {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+    input[type="text"] {
+      padding: 10px;
+      margin-bottom: 20px;
+      width: 200px;
+      font-size: 16px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #5cb85c;
+      color: white;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #4cae4c;
+    }
+    .error-message {
+      text-align: center;
+      color: red;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+    .product-details {
+      margin-top: 20px;
+      text-align: center;
+    }
+    .product-details p {
+      font-size: 18px;
+    }
+    .back-link {
+      display: block;
+      text-align: center;
+      margin-top: 30px;
+      font-size: 18px;
+      text-decoration: none;
+      color: #007bff;
+    }
+    .back-link:hover {
+      text-decoration: underline;
+    }
+  </style>
 </head>
 <body>
-<h2>Buscar Producto por ID</h2>
 
-<form action="/producto/buscar" method="post">
-  <label for="productoId">ID del Producto:</label>
-  <input type="text" id="productoId" name="productoId" th:value="${productoId}" required/>
-  <button type="submit">Buscar</button>
-</form>
+<div class="container">
+  <h2>Buscar Producto por ID</h2>
 
-<p th:if="${error}" th:text="${error}" style="color: red;"></p>
+  <form action="/producto/buscar" method="post">
+    <label for="productoId">ID del Producto:</label>
+    <input type="text" id="productoId" name="productoId" th:value="${productoId}" required/>
+    <button type="submit">Buscar</button>
+  </form>
 
-<div th:if="${producto != null}">
-  <h3>Detalles del Producto</h3>
-  <p><strong>ID:</strong> <span th:text="${producto.id}"></span></p>
-  <p><strong>Nombre:</strong> <span th:text="${producto.nombre}"></span></p>
-  <p><strong>Cantidad:</strong> <span th:text="${producto.cantidad}"></span></p>
-  <p><strong>Precio:</strong> <span th:text="${producto.precio}"></span></p>
+  <p th:if="${error}" th:text="${error}" class="error-message"></p>
+
+  <div th:if="${producto != null}" class="product-details">
+    <h3>Detalles del Producto</h3>
+    <p><strong>ID:</strong> <span th:text="${producto.id}"></span></p>
+    <p><strong>Nombre:</strong> <span th:text="${producto.nombre}"></span></p>
+    <p><strong>Cantidad:</strong> <span th:text="${producto.cantidad}"></span></p>
+    <p><strong>Precio:</strong> <span th:text="${producto.precio}"></span></p>
+  </div>
+
+  <a href="/" class="back-link">Volver al inicio</a>
 </div>
 
-<br/>
-<a href="/">Volver al inicio</a>
 </body>
 </html>

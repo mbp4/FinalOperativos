@@ -20,7 +20,6 @@ public class ServiceNodo2 {
 
     public String actualizarCantidadProducto(String idProducto, int nuevaCantidad) {
         try {
-
             DocumentReference docRef = db.collection("productos").document(idProducto);
             DocumentSnapshot snapshot = docRef.get().get();
 

@@ -1,28 +1,105 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Actualizar Producto</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f4f7fa;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+    h2 {
+      text-align: center;
+      color: #333;
+    }
+    .container {
+      width: 80%;
+      margin: 30px auto;
+      background-color: #ffffff;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    label {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+    input[type="text"], input[type="number"] {
+      padding: 10px;
+      margin-bottom: 20px;
+      width: 300px;
+      font-size: 16px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #5cb85c;
+      color: white;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #4cae4c;
+    }
+    .error-message {
+      text-align: center;
+      color: red;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+    .back-link {
+      display: inline-block;
+      text-align: center;
+      margin-top: 30px;
+      font-size: 18px;
+      text-decoration: none;
+      color: #007bff;
+      padding: 10px 20px;
+      background-color: #f1f1f1;
+      border-radius: 5px;
+    }
+    .back-link:hover {
+      text-decoration: underline;
+      background-color: #e1e1e1;
+    }
+  </style>
 </head>
 <body>
-<h2>Actualizar Producto</h2>
 
-<form action="/actualizar" method="post">
-  <input type="hidden" name="id" th:value="${producto.id}"/>
+<div class="container">
+  <h2>Actualizar Producto</h2>
 
-  <label for="nombre">Nombre:</label>
-  <input type="text" id="nombre" name="nombre" th:value="${producto.nombre}" required/><br/><br/>
+  <form action="/actualizar" method="post">
+    <input type="hidden" name="id" th:value="${producto.id}"/>
 
-  <label for="cantidad">Cantidad:</label>
-  <input type="number" id="cantidad" name="cantidad" th:value="${producto.cantidad}" required/><br/><br/>
+    <label for="nombre">Nombre:</label>
+    <input type="text" id="nombre" name="nombre" th:value="${producto.nombre}" required/><br/>
 
-  <label for="precio">Precio:</label>
-  <input type="number" id="precio" name="precio" th:value="${producto.precio}" required/><br/><br/>
+    <label for="cantidad">Cantidad:</label>
+    <input type="number" id="cantidad" name="cantidad" th:value="${producto.cantidad}" required/><br/>
 
-  <button type="submit">Actualizar Producto</button>
-</form>
+    <label for="precio">Precio:</label>
+    <input type="number" id="precio" name="precio" th:value="${producto.precio}" required/><br/>
 
-<p th:if="${error}" th:text="${error}" style="color: red;"></p>
+    <button type="submit">Actualizar Producto</button>
+  </form>
+
+  <p th:if="${error}" th:text="${error}" class="error-message"></p>
+
+  <a href="/" class="back-link">Volver al inicio</a>
+</div>
 
 </body>
 </html>
-
