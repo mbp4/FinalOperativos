@@ -7,7 +7,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping("/actualizar")
 public class ControllerNodo2 {
     @Autowired
     private ServiceNodo2 serviceNodo2;
@@ -17,8 +16,39 @@ public class ControllerNodo2 {
         this.serviceNodo2 = serviceNodo2;
     }
 
-    @PutMapping("/{id}")
-    public String actualizarCantidad(@PathVariable String id, @RequestParam int cantidad) {
-        return serviceNodo2.actualizarCantidadProducto(id, cantidad);
+    @GetMapping("/producto/actualizar")
+    public String mostrarFormulario(Model model) {
+        model.addAttribute("producto", new Producto());
+        model.addAttribute("productoId", "");
+        return "actualizarProducto";
+    }
+
+    @PostMapping("/producto/actualizar")
+    public String obtenerProducto(@RequestParam("productoId") String productoId, Model model) {
+        // Obtener el producto por su ID
+        Producto producto = serviceNodo2.obtenerProductoPorId(productoId);
+        if (producto != null) {
+            model.addAttribute("producto", producto);  // Pasar el producto a la vista
+            model.addAttribute("productoId", productoId);
+            return "actualizarCantidadProducto";  // Mostrar formulario para actualizar la cantidad
+        } else {
+            model.addAttribute("error", "Producto no encontrado");
+            return "error";  // Volver al formulario de búsqueda si no se encuentra
+        }
+    }
+
+    // Segundo formulario para actualizar la cantidad del producto
+    @PostMapping("/producto/actualizar/cantidad")
+    public String actualizarCantidad(@RequestParam("productoId") String productoId,
+                                     @RequestParam("cantidad") int cantidad, Model model) {
+
+        String producto = serviceNodo2.actualizarCantidadProducto(productoId, cantidad);
+        if (producto != null) {
+            model.addAttribute("producto", producto);
+            return "productoActualizado";
+        } else {
+            model.addAttribute("error", "No se pudo actualizar la cantidad");
+            return "error";
+        }
     }
 }

@@ -36,4 +36,21 @@ public class ServiceNodo2 {
             return "Error al actualizar la cantidad: " + e.getMessage();
         }
     }
+
+    public Producto obtenerProductoPorId(String productoId) {
+        DocumentReference productoRef = db.collection("productos").document(productoId);
+        ApiFuture<DocumentSnapshot> future = productoRef.get();
+
+        try {
+            com.google.cloud.firestore.DocumentSnapshot documentSnapshot = future.get();
+            if (documentSnapshot.exists()) {
+                return documentSnapshot.toObject(Producto.class);
+            }
+
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+            System.err.println("Error al obtener el producto: " + e.getMessage());
+        }
+        return null;  //en caso de que no exista se devuelve un null
+    }
 }
