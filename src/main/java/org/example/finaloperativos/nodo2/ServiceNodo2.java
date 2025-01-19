@@ -1,14 +1,12 @@
 package org.example.finaloperativos.nodo2;
 
 import com.google.api.core.ApiFuture;
-import com.google.cloud.firestore.DocumentReference;
-import com.google.cloud.firestore.DocumentSnapshot;
-import com.google.cloud.firestore.WriteResult;
+import com.google.cloud.firestore.*;
 import org.example.finaloperativos.Producto;
 import org.springframework.stereotype.Service;
-import com.google.cloud.firestore.Firestore;
 import com.google.firebase.cloud.FirestoreClient;
 
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 @Service
@@ -20,34 +18,23 @@ public class ServiceNodo2 {
         this.db = db;
     }
 
-    //con este metodo encontramos por id
-    public Producto obtenerProductoPorId(String productoId) {
-        DocumentReference productoRef = db.collection("productos").document(productoId);
-        ApiFuture<DocumentSnapshot> future = productoRef.get();
-
+    public String actualizarCantidadProducto(String idProducto, int nuevaCantidad) {
         try {
-            DocumentSnapshot documentSnapshot = future.get();
-            if (documentSnapshot.exists()) {
-                return documentSnapshot.toObject(Producto.class);
+
+            DocumentReference docRef = db.collection("productos").document(idProducto);
+            DocumentSnapshot snapshot = docRef.get().get();
+
+            if (snapshot.exists()) {
+                Map<String, Object> producto = snapshot.getData();
+                producto.put("cantidad", nuevaCantidad);
+
+                docRef.set(producto, SetOptions.merge());
+                return "Cantidad actualizada correctamente";
+            } else {
+                return "Producto no encontrado";
             }
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-            System.err.println("Error al obtener el producto: " + e.getMessage());
-        }
-        return null;  // En caso de que no exista, se devuelve un null
-    }
-
-    //con esto actualizaremos el producto encontrado
-    public boolean actualizarCantidadProducto(String productoId, int nuevaCantidad) {
-        DocumentReference productoRef = db.collection("productos").document(productoId);
-        ApiFuture<WriteResult> future = productoRef.update("cantidad", nuevaCantidad);
-        try {
-            future.get();
-            return true;
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-            System.err.println("Error al actualizar la cantidad del producto: " + e.getMessage());
-            return false;
+        } catch (Exception e) {
+            return "Error al actualizar la cantidad: " + e.getMessage();
         }
     }
 }

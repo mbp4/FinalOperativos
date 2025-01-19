@@ -6,14 +6,14 @@
 <body>
 <h2>Actualizar Producto</h2>
 
-<form action="/producto/actualizar/{id}" method="post">
+<form action="/actualizar" method="post">
   <input type="hidden" name="id" th:value="${producto.id}"/>
 
   <label for="nombre">Nombre:</label>
   <input type="text" id="nombre" name="nombre" th:value="${producto.nombre}" required/><br/><br/>
 
-  <label for="cantidad">Descripción:</label>
-  <input type="text" id="cantidad" name="cantidad" th:value="${producto.cantidad}" required/><br/><br/>
+  <label for="cantidad">Cantidad:</label>
+  <input type="number" id="cantidad" name="cantidad" th:value="${producto.cantidad}" required/><br/><br/>
 
   <label for="precio">Precio:</label>
   <input type="number" id="precio" name="precio" th:value="${producto.precio}" required/><br/><br/>
@@ -25,3 +25,4 @@
 
 </body>
 </html>
+
