@@ -1,12 +1,8 @@
 package org.example.finaloperativos.nodo2;
 
-import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
-import org.example.finaloperativos.Producto;
 import org.springframework.stereotype.Service;
-import com.google.firebase.cloud.FirestoreClient;
 
-import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 @Service
@@ -24,15 +20,21 @@ public class ServiceNodo2 {
             DocumentSnapshot snapshot = docRef.get().get();
 
             if (snapshot.exists()) {
-                Map<String, Object> producto = snapshot.getData();
-                producto.put("cantidad", nuevaCantidad);
+                int cantidadActual = snapshot.getLong("cantidad").intValue();
 
-                docRef.set(producto, SetOptions.merge());
-                return "Cantidad actualizada correctamente";
+                if (nuevaCantidad < 0 && Math.abs(nuevaCantidad) > cantidadActual) {
+                    return "Error: No puedes retirar más unidades de las disponibles.";
+                }
+
+                int nuevaCantidadFinal = cantidadActual + nuevaCantidad;
+                docRef.update("cantidad", nuevaCantidadFinal).get();
+
+                return "Cantidad actualizada correctamente. Nueva cantidad: " + nuevaCantidadFinal;
             } else {
-                return "Producto no encontrado";
+                return "Error: Producto no encontrado.";
             }
-        } catch (Exception e) {
+        } catch (ExecutionException | InterruptedException e) {
+            Thread.currentThread().interrupt(); // Restablecer el estado interrumpido
             return "Error al actualizar la cantidad: " + e.getMessage();
         }
     }
